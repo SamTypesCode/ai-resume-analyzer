@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import type { Route } from "./+types/home";
 import { useState, type FormEvent } from "react";
 import FileUploader from "~/components/FileUploader";
+import { convertPdfToImage } from "~/lib/pdf2img";
 
 // Define the meta deta such as page title and description for SEO
 export function meta({}: Route.MetaArgs) {
@@ -24,6 +25,31 @@ export default function Upload() {
   // State for storing the PDF file uploaded by the user
   const [file, setFile] = useState<File | null>(null);
 
+  // Feed the user input to the AI and
+  const processData = async ({
+    companyName,
+    jobTitle,
+    jobDescription,
+    file,
+  }: {
+    companyName: string;
+    jobTitle: string;
+    jobDescription: string;
+    file: File;
+  }) => {
+    // Set the processing variable as true so the UI changes
+    setIsProcessing(true);
+
+    // Convert the first page of the PDF into an image so it can be sent to the AI
+    setStatusText("Converting PDF to image");
+    const imageFile = await convertPdfToImage(file);
+    if (!imageFile.file) return setStatusText("Failed to convert PDF to image");
+
+    // TODO: Send the image with a prompt to an AI model to generate the review
+    // TODO: Save the PDF, Image and the AI generated review using idb-keyval
+    // TODO: Redirect to the review page
+  };
+
   // Function for handling form submission
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     const form = e.currentTarget.closest("form"); // Find the form element
@@ -38,8 +64,8 @@ export default function Upload() {
     // Don't proceed if the user has not uploaded a file
     if (!file) return;
 
-    // TODO: Add function for handling the analysis of the user data
-    // handleAnalyze({ companyName, jobTitle, jobDescription, file });
+    // Process the user input data
+    processData({ companyName, jobTitle, jobDescription, file });
   };
 
   // File select function to be passed to the file uploader component
