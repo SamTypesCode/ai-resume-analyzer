@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import type { Route } from "./+types/home";
 import { useState, type FormEvent } from "react";
+import FileUploader from "~/components/FileUploader";
 
 // Define the meta deta such as page title and description for SEO
 export function meta({}: Route.MetaArgs) {
@@ -41,6 +42,11 @@ export default function Upload() {
     // handleAnalyze({ companyName, jobTitle, jobDescription, file });
   };
 
+  // File select function to be passed to the file uploader component
+  const handleFileSelect = (file: File | null) => {
+    setFile(file);
+  };
+
   return (
     <main className="flex flex-col min-h-screen bg-white !pt-0">
       {/* A simple bar at the top with a button for going back to the home page */}
@@ -75,7 +81,7 @@ export default function Upload() {
               <form
                 id="upload-form"
                 onSubmit={(e) => {
-                  e.preventDefault();
+                  e.preventDefault(); // Prevent page reload and URL update
                   handleSubmit(e);
                 }}
                 className="w-full space-y-0-2"
@@ -135,8 +141,7 @@ export default function Upload() {
                   >
                     Your Resume (PDF)
                   </label>
-                  {/* TODO: Add working FileUploader component */}
-                  {/* <FileUploader onFileSelect={handleFileSelect} /> */}
+                  <FileUploader onFileSelect={handleFileSelect} />
                 </div>
 
                 <button

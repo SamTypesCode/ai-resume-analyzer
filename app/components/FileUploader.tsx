@@ -1,0 +1,98 @@
+import { useCallback, useState } from "react";
+import { useDropzone } from "react-dropzone";
+import { formatSize } from "~/lib/utils";
+
+// Props to make Typescript stop screaming
+interface FileUploaderProps {
+  onFileSelect?: (file: File | null) => void;
+}
+
+// Export the file uploader component for use in upload page
+const FileUploader = ({ onFileSelect }: FileUploaderProps) => {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  // Function to handle file drag and drop
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      const file = acceptedFiles[0] || null;
+      setSelectedFile(file);
+      onFileSelect?.(file);
+    },
+    [onFileSelect]
+  );
+
+  // Max file size as 20 MB
+  const maxFileSize = 20 * 1024 * 1024;
+
+  // Settings for react-dropzone
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    multiple: false, // Only allow one file to be selectable
+    accept: { "application/pdf": [".pdf"] }, // Only accept PDF files
+    maxSize: maxFileSize, // Max file size should be 20 MB
+  });
+
+  return (
+    <div className="w-full">
+      {selectedFile ? (
+        <div className="flex items-center justify-between p-4 border border-gray-300 rounded-xl bg-gray-50">
+          <div className="flex items-center space-x-4 min-w-0">
+            <img
+              src="/images/pdf.png"
+              alt="pdf icon"
+              className="w-10 h-10 flex-shrink-0"
+            />
+            <div className="min-w-0">
+              <p className="text-sm font-medium text-gray-700 truncate">
+                {selectedFile.name}
+              </p>
+              <p className="text-sm text-gray-500">
+                {formatSize(selectedFile.size)}
+              </p>
+            </div>
+          </div>
+          <button
+            className="p-2 cursor-pointer rounded transition flex-shrink-0"
+            onClick={() => {
+              setSelectedFile(null);
+              onFileSelect?.(null);
+            }}
+          >
+            <img src="/icons/cross.svg" alt="remove file" className="w-4 h-4" />
+          </button>
+        </div>
+      ) : (
+        <div
+          {...getRootProps()}
+          className="flex flex-col items-center justify-center h-64 w-full cursor-pointer rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 text-center transition"
+        >
+          <input {...getInputProps()} />
+          <div className="flex flex-col items-center justify-center pb-6 pt-5">
+            <svg
+              className="mb-4 h-8 w-8 text-gray-500"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 20 16"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+              />
+            </svg>
+            <p className="mb-2 text-base text-gray-600">
+              <span className="font-semibold">Click to upload</span> or drag and
+              drop your PDF
+            </p>
+            <p className="text-sm text-gray-500">PDF only, max 20MB</p>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default FileUploader;
