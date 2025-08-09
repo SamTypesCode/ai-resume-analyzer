@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import type { Route } from "./+types/home";
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 
 // Define the meta deta such as page title and description for SEO
 export function meta({}: Route.MetaArgs) {
@@ -20,6 +20,26 @@ export default function Upload() {
   const [isProcessing, setIsProcessing] = useState(false);
   // State for storing the status message which will tell the user what is currently being processed
   const [statusText, setStatusText] = useState("");
+  // State for storing the PDF file uploaded by the user
+  const [file, setFile] = useState<File | null>(null);
+
+  // Function for handling form submission
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const form = e.currentTarget.closest("form"); // Find the form element
+    if (!form) return; // Return if theres no form element nearby
+    const formData = new FormData(form); // Retrieve the form data input by the user
+
+    // Get the input put by the user in the form fields
+    const companyName = formData.get("company-name") as string;
+    const jobTitle = formData.get("job-title") as string;
+    const jobDescription = formData.get("job-description") as string;
+
+    // Don't proceed if the user has not uploaded a file
+    if (!file) return;
+
+    // TODO: Add function for handling the analysis of the user data
+    // handleAnalyze({ companyName, jobTitle, jobDescription, file });
+  };
 
   return (
     <main className="flex flex-col min-h-screen bg-white !pt-0">
@@ -56,8 +76,7 @@ export default function Upload() {
                 id="upload-form"
                 onSubmit={(e) => {
                   e.preventDefault();
-                  // TODO: Add function to handle form submission
-                  // handleSubmit(e);
+                  handleSubmit(e);
                 }}
                 className="w-full space-y-0-2"
               >
