@@ -3,6 +3,9 @@ import type { Route } from "./+types/home";
 import { useState, type FormEvent } from "react";
 import FileUploader from "~/components/FileUploader";
 import { convertPdfToImage } from "~/lib/pdf2img";
+import { generateUUID } from "~/lib/utils";
+import { prepareInstructions } from "~/lib/constants";
+import { analyzeWithGemini } from "~/lib/gemini";
 
 // Define the meta deta such as page title and description for SEO
 export function meta({}: Route.MetaArgs) {
@@ -37,17 +40,90 @@ export default function Upload() {
     jobDescription: string;
     file: File;
   }) => {
-    // Set the processing variable as true so the UI changes
-    setIsProcessing(true);
+    try {
+      // Set the processing variable as true so the UI changes
+      setIsProcessing(true);
 
-    // Convert the first page of the PDF into an image so it can be sent to the AI
-    setStatusText("Converting PDF to image");
-    const imageFile = await convertPdfToImage(file);
-    if (!imageFile.file) return setStatusText("Failed to convert PDF to image");
+      // Convert the first page of the PDF into an image so it can be sent to the AI
+      setStatusText("Converting PDF to image");
+      let imageFile;
+      try {
+        imageFile = await convertPdfToImage(file);
+        if (!imageFile.file) {
+          setStatusText("Failed to convert PDF to image");
+          return;
+        }
+      } catch (err) {
+        console.error("Error converting PDF:", err);
+        setStatusText("Failed to convert PDF to image");
+        return;
+      }
 
-    // TODO: Send the image with a prompt to an AI model to generate the review
-    // TODO: Save the PDF, Image and the AI generated review using idb-keyval
-    // TODO: Redirect to the review page
+      // Prepare the data object for storing
+      setStatusText("Preparing data");
+      let uuid;
+      let resume;
+      try {
+        uuid = generateUUID();
+        resume = {
+          id: uuid,
+          companyName,
+          jobTitle,
+          jobDescription,
+          feedback: null,
+        } as Resume;
+      } catch (err) {
+        console.error("Error preparing data:", err);
+        setStatusText("Failed to prepare data");
+        return;
+      }
+
+      // Prepare AI prompt
+      setStatusText("Preparing instructions");
+      let prompt;
+      try {
+        prompt = prepareInstructions({
+          companyName,
+          jobTitle,
+          jobDescription,
+        });
+        if (!prompt) {
+          setStatusText("Failed to prepare instructions");
+          return;
+        }
+      } catch (err) {
+        console.error("Error preparing instructions:", err);
+        setStatusText("Failed to prepare instructions");
+        return;
+      }
+
+      // Send data to AI
+      setStatusText("Analyzing");
+      let geminiResponse;
+      try {
+        geminiResponse = await analyzeWithGemini(imageFile.file, prompt);
+        if (!geminiResponse) {
+          setStatusText("Failed to analyze resume");
+          return;
+        }
+        geminiResponse = geminiResponse
+          .replace(/^```(?:json)?\s*/i, "")
+          .replace(/\s*```$/i, "");
+      } catch (err) {
+        console.error("Error analyzing with Gemini:", err);
+        setStatusText("Failed to analyze resume");
+        return;
+      }
+
+      // TODO: Save the PDF, Image and the AI generated review using idb-keyval
+      // TODO: Redirect to the review page
+    } catch (err) {
+      console.error("Unexpected error in processData:", err);
+      setStatusText("Something went wrong");
+    } finally {
+      // This ensures the processing flag is reset even if something fails
+      setIsProcessing(false);
+    }
   };
 
   // Function for handling form submission
@@ -89,7 +165,7 @@ export default function Upload() {
 
       <div className="flex-1 w-full flex flex-col px-4">
         {isProcessing ? (
-          <></>
+          <>{statusText}</>
         ) : (
           <>
             <section className="w-full flex flex-col items-center justify-center px-4 pt-16 pb-16 text-center">
