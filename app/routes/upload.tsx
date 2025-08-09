@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import type { Route } from "./+types/home";
 import { useState, type FormEvent } from "react";
 import FileUploader from "~/components/FileUploader";
@@ -6,6 +6,7 @@ import { convertPdfToImage } from "~/lib/pdf2img";
 import { generateUUID } from "~/lib/utils";
 import { prepareInstructions } from "~/lib/constants";
 import { analyzeWithGemini } from "~/lib/gemini";
+import { saveResume } from "~/lib/db";
 
 // Define the meta deta such as page title and description for SEO
 export function meta({}: Route.MetaArgs) {
@@ -21,6 +22,8 @@ export function meta({}: Route.MetaArgs) {
 
 // Return the default upload page component
 export default function Upload() {
+  // Will be used to redirect to the resume review page later
+  const navigate = useNavigate();
   // State for storing whether the resume is being actively processed or not
   const [isProcessing, setIsProcessing] = useState(false);
   // State for storing the status message which will tell the user what is currently being processed
@@ -106,17 +109,38 @@ export default function Upload() {
           setStatusText("Failed to analyze resume");
           return;
         }
-        geminiResponse = geminiResponse
-          .replace(/^```(?:json)?\s*/i, "")
-          .replace(/\s*```$/i, "");
       } catch (err) {
         console.error("Error analyzing with Gemini:", err);
         setStatusText("Failed to analyze resume");
         return;
       }
 
-      // TODO: Save the PDF, Image and the AI generated review using idb-keyval
-      // TODO: Redirect to the review page
+      // Turn the AI's response into a JSON object so the values inside can be accesed and the data can be mapped over
+      try {
+        // Remove triple backticks (``` or ```json)
+        const cleaned = geminiResponse
+          .replace(/^```(?:json)?/, "")
+          .replace(/```$/, "")
+          .trim();
+
+        // Parse the response into JSON
+        resume.feedback = JSON.parse(cleaned);
+      } catch (err) {
+        console.error("Failed to parse Gemini response:", err);
+        return setStatusText("Failed to parse AI response");
+      }
+
+      // Save the AI's response, the PDF file and the image in the local IndexedDB using idb-keyval
+      setStatusText("Saving");
+      const saveResult = await saveResume(resume, file, imageFile.file);
+      if (!saveResult.success) {
+        setStatusText("Failed to save resume: " + saveResult.error);
+        return;
+      }
+
+      // Redirect to the resume review page
+      setStatusText("Redirecting");
+      navigate(`/resume/${uuid}`);
     } catch (err) {
       console.error("Unexpected error in processData:", err);
       setStatusText("Something went wrong");
