@@ -35,7 +35,8 @@ const FileUploader = ({ onFileSelect }: FileUploaderProps) => {
   return (
     <div className="w-full">
       {selectedFile ? (
-        <div className="flex items-center justify-between p-4 border border-gray-300 rounded-xl bg-gray-50">
+        // Show selected file info
+        <div className="flex items-center justify-between p-4 border border-neutral-300 rounded-xl bg-neutral-50">
           <div className="flex items-center space-x-4 min-w-0">
             <img
               src="/images/pdf.png"
@@ -43,16 +44,17 @@ const FileUploader = ({ onFileSelect }: FileUploaderProps) => {
               className="w-10 h-10 flex-shrink-0"
             />
             <div className="min-w-0">
-              <p className="text-sm font-medium text-gray-700 truncate">
+              <p className="text-sm font-medium text-neutral-700 truncate">
                 {selectedFile.name}
               </p>
-              <p className="text-sm text-gray-500">
+              <p className="text-sm text-neutral-500">
                 {formatSize(selectedFile.size)}
               </p>
             </div>
           </div>
+          {/* Button to remove the selected file */}
           <button
-            className="p-2 cursor-pointer rounded transition flex-shrink-0"
+            className="p-2 cursor-pointer rounded transition flex-shrink-0 hover:bg-neutral-200"
             onClick={() => {
               setSelectedFile(null);
               onFileSelect?.(null);
@@ -62,14 +64,15 @@ const FileUploader = ({ onFileSelect }: FileUploaderProps) => {
           </button>
         </div>
       ) : (
+        // Show upload dropzone if no file is selected
         <div
           {...getRootProps()}
-          className="flex flex-col items-center justify-center h-64 w-full cursor-pointer rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100 text-center transition"
+          className="flex flex-col items-center justify-center h-64 w-full cursor-pointer rounded-xl border-2 border-dashed border-neutral-300 bg-neutral-50 hover:bg-neutral-100 text-center transition"
         >
           <input {...getInputProps()} />
           <div className="flex flex-col items-center justify-center pb-6 pt-5">
             <svg
-              className="mb-4 h-8 w-8 text-gray-500"
+              className="mb-4 h-8 w-8 text-neutral-500"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -83,11 +86,11 @@ const FileUploader = ({ onFileSelect }: FileUploaderProps) => {
                 d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
               />
             </svg>
-            <p className="mb-2 text-base text-gray-600">
+            <p className="mb-2 text-base text-neutral-600">
               <span className="font-semibold">Click to upload</span> or drag and
               drop your PDF
             </p>
-            <p className="text-sm text-gray-500">PDF only, max 20MB</p>
+            <p className="text-sm text-neutral-500">PDF only, max 20MB</p>
           </div>
         </div>
       )}

@@ -50,12 +50,12 @@ export default function Upload() {
   return (
     <main className="flex flex-col min-h-screen bg-white !pt-0">
       {/* A simple bar at the top with a button for going back to the home page */}
-      <nav className="flex flex-row sticky top-0 bg-white/70 backdrop-blur-lg justify-between items-center p-4 border-b border-gray-200 z-10">
+      <nav className="flex flex-row sticky top-0 bg-white/90 backdrop-blur-lg justify-between items-center p-4 border-b border-neutral-200 z-10">
         <Link
           to="/"
-          className="flex flex-row items-center gap-2 border border-gray-200 rounded-lg p-2 shadow-sm bg-white"
+          className="flex flex-row items-center gap-2 border border-neutral-200 rounded-lg p-2 shadow-sm bg-white"
         >
-          <span className="text-gray-800 text-sm font-semibold">
+          <span className="text-neutral-800 text-sm font-semibold">
             Back to Homepage
           </span>
         </Link>
@@ -68,10 +68,10 @@ export default function Upload() {
           <>
             <section className="w-full flex flex-col items-center justify-center px-4 pt-16 pb-16 text-center">
               <div className="w-full max-w-lg">
-                <p className="text-5xl md:text-6xl leading-tight tracking-[-2px] font-semibold text-gray-900">
+                <p className="text-5xl md:text-6xl leading-tight tracking-[-2px] font-semibold text-neutral-900">
                   Get smart AI feedback for your dream job
                 </p>
-                <h2 className="mt-4 !text-gray-600">
+                <h2 className="mt-4 !text-neutral-600">
                   Upload your resume and get an ATS score, detailed suggestions,
                   and improvement tips.
                 </h2>
@@ -89,7 +89,7 @@ export default function Upload() {
                 <div className="flex flex-col w-full">
                   <label
                     htmlFor="company-name"
-                    className="text-base font-medium text-gray-800 mb-1"
+                    className="text-base font-medium text-neutral-800 mb-1"
                   >
                     Company Name
                   </label>
@@ -98,14 +98,14 @@ export default function Upload() {
                     id="company-name"
                     name="company-name"
                     placeholder="Ex: OpenAI"
-                    className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full border border-neutral-300 rounded-lg px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-neutral-500"
                   />
                 </div>
 
                 <div className="flex flex-col w-full">
                   <label
                     htmlFor="job-title"
-                    className="text-base font-medium text-gray-800 mb-1"
+                    className="text-base font-medium text-neutral-800 mb-1"
                   >
                     Job Title
                   </label>
@@ -114,14 +114,14 @@ export default function Upload() {
                     id="job-title"
                     name="job-title"
                     placeholder="Ex: Software Engineer"
-                    className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full border border-neutral-300 rounded-lg px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-neutral-500"
                   />
                 </div>
 
                 <div className="flex flex-col w-full">
                   <label
                     htmlFor="job-description"
-                    className="text-base font-medium text-gray-800 mb-1"
+                    className="text-base font-medium text-neutral-800 mb-1"
                   >
                     Job Description
                   </label>
@@ -130,25 +130,72 @@ export default function Upload() {
                     name="job-description"
                     rows={5}
                     placeholder="Paste the job description here"
-                    className="w-full border border-gray-300 rounded-lg px-4 py-3 text-base resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full border border-neutral-300 rounded-lg px-4 py-3 text-base resize-none focus:outline-none focus:ring-2 focus:ring-neutral-500"
                   />
                 </div>
 
                 <div className="flex flex-col w-full space-y-2">
-                  <label
-                    htmlFor="resume"
-                    className="text-base font-medium text-gray-800"
-                  >
+                  <label className="text-base font-medium text-neutral-800">
                     Your Resume (PDF)
                   </label>
                   <FileUploader onFileSelect={handleFileSelect} />
                 </div>
-
                 <button
                   type="submit"
-                  className="w-full cursor-pointer bg-gray-900 text-white text-lg font-semibold py-3 rounded-lg shadow hover:bg-gray-800 transition"
+                  className="group cursor-pointer relative w-full overflow-hidden rounded-[8px] border border-transparent bg-neutral-950 px-4 text-white"
                 >
-                  Submit
+                  <span className="relative inline-flex py-3">
+                    <span className="duration-700 [transition-delay:0.02s] group-hover:[transform:rotateX(360deg)]">
+                      R
+                    </span>
+                    <span className="duration-700 [transition-delay:0.04s] group-hover:[transform:rotateX(360deg)]">
+                      e
+                    </span>
+                    <span className="duration-700 [transition-delay:0.06s] group-hover:[transform:rotateX(360deg)]">
+                      v
+                    </span>
+                    <span className="duration-700 [transition-delay:0.08s] group-hover:[transform:rotateX(360deg)]">
+                      i
+                    </span>
+                    <span className="duration-700 [transition-delay:0.10s] group-hover:[transform:rotateX(360deg)]">
+                      e
+                    </span>
+                    <span className="duration-700 [transition-delay:0.12s] group-hover:[transform:rotateX(360deg)]">
+                      w
+                    </span>
+                    {/* Space */}
+                    <span className="duration-700 [transition-delay:0.14s] group-hover:[transform:rotateX(360deg)]">
+                      &nbsp;
+                    </span>
+                    <span className="duration-700 [transition-delay:0.16s] group-hover:[transform:rotateX(360deg)]">
+                      m
+                    </span>
+                    <span className="duration-700 [transition-delay:0.18s] group-hover:[transform:rotateX(360deg)]">
+                      y
+                    </span>
+                    {/* Space */}
+                    <span className="duration-700 [transition-delay:0.20s] group-hover:[transform:rotateX(360deg)]">
+                      &nbsp;
+                    </span>
+                    <span className="duration-700 [transition-delay:0.22s] group-hover:[transform:rotateX(360deg)]">
+                      R
+                    </span>
+                    <span className="duration-700 [transition-delay:0.24s] group-hover:[transform:rotateX(360deg)]">
+                      e
+                    </span>
+                    <span className="duration-700 [transition-delay:0.26s] group-hover:[transform:rotateX(360deg)]">
+                      s
+                    </span>
+                    <span className="duration-700 [transition-delay:0.28s] group-hover:[transform:rotateX(360deg)]">
+                      u
+                    </span>
+                    <span className="duration-700 [transition-delay:0.30s] group-hover:[transform:rotateX(360deg)]">
+                      m
+                    </span>
+                    <span className="duration-700 [transition-delay:0.32s] group-hover:[transform:rotateX(360deg)]">
+                      e
+                    </span>
+                  </span>
                 </button>
               </form>
             </div>
