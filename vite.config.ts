@@ -4,5 +4,8 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
+  server: {
+    host: true, // Expose the server onto the local network so it's accesible from other devices like mobile
+  },
   plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
 });

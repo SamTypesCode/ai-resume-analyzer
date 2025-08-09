@@ -1,15 +1,46 @@
+/* Load Mona Sans font from Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Mona+Sans:ital,wght@0,200..900;1,200..900&display=swap");
+
+/* Import Tailwind base styles (requires PostCSS or Tailwind setup) */
 @import "tailwindcss";
 
+/* Define global custom properties for font families (used throughout the app) */
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-sans:
+    "Mona Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
+/* Apply global background and layout defaults */
 html,
 body {
-  @apply bg-white dark:bg-gray-950;
+  @apply bg-white w-full;
+  font-family: var(--font-sans);
+}
 
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
-  }
+/* Ensure main content fills the full viewport height */
+/* (Each page is wrapped in a <main> tag) */
+main {
+  @apply min-h-screen;
+}
+
+/* Primary heading style */
+h1 {
+  @apply text-6xl leading-tight tracking-[-2px] font-semibold;
+}
+
+/* Secondary heading / subtitle */
+h2 {
+  @apply text-3xl;
+}
+
+/* Input and textarea styling with subtle focus ring */
+input,
+textarea {
+  @apply w-full rounded-lg bg-white focus:outline-none focus:ring-[1px];
+}
+
+/* Form layout with vertical spacing between fields */
+form {
+  @apply flex flex-col items-start gap-8 w-full;
 }
