@@ -5,10 +5,11 @@ import { formatSize } from "~/lib/utils";
 // Props to make Typescript stop screaming
 interface FileUploaderProps {
   onFileSelect?: (file: File | null) => void;
+  fileUploadError?: boolean;
 }
 
 // Export the file uploader component for use in upload page
-const FileUploader = ({ onFileSelect }: FileUploaderProps) => {
+const FileUploader = ({ onFileSelect, fileUploadError }: FileUploaderProps) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   // Function to handle file drag and drop
@@ -67,7 +68,7 @@ const FileUploader = ({ onFileSelect }: FileUploaderProps) => {
         // Show upload dropzone if no file is selected
         <div
           {...getRootProps()}
-          className="flex flex-col items-center justify-center h-64 w-full cursor-pointer rounded-xl border-2 border-dashed border-neutral-300 bg-neutral-50 hover:bg-neutral-100 text-center transition"
+          className={`flex flex-col items-center justify-center h-64 w-full cursor-pointer rounded-xl border-2 border-dashed  text-center transition ${fileUploadError ? "border-red-300 bg-red-50 hover:bg-red-100" : "border-neutral-300 bg-neutral-50 hover:bg-neutral-100"}`}
         >
           <input {...getInputProps()} />
           <div className="flex flex-col items-center justify-center pb-6 pt-5">

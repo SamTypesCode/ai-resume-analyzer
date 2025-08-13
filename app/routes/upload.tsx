@@ -30,6 +30,8 @@ export default function Upload() {
   const [statusText, setStatusText] = useState("");
   // State for storing the PDF file uploaded by the user
   const [file, setFile] = useState<File | null>(null);
+  // State for storing whether the user pressed submit without selecting a file 
+  const [fileUploadError, setFileUploadError] = useState(false);
 
   // Feed the user input to the AI and
   const processData = async ({
@@ -162,14 +164,26 @@ export default function Upload() {
     const jobDescription = formData.get("job-description") as string;
 
     // Don't proceed if the user has not uploaded a file
-    if (!file) return;
+    if (!file) {
+      // If the device has vibration hardware like one in a mobile phone then vibrate the phone
+      if ("vibrate" in navigator) {
+        navigator.vibrate(200);
+      } else {
+        console.log("Vibration not supported on this device.");
+      }
+      // Make the file uploader component red
+      setFileUploadError(true);
+      return
+    };
 
+    setFileUploadError(false);
     // Process the user input data
     processData({ companyName, jobTitle, jobDescription, file });
   };
 
   // File select function to be passed to the file uploader component
   const handleFileSelect = (file: File | null) => {
+    setFileUploadError(false);
     setFile(file);
   };
 
@@ -264,7 +278,7 @@ export default function Upload() {
                   <label className="text-base font-medium text-neutral-800">
                     Your Resume (PDF)
                   </label>
-                  <FileUploader onFileSelect={handleFileSelect} />
+                  <FileUploader onFileSelect={handleFileSelect} fileUploadError={fileUploadError}/>
                 </div>
                 <button
                   type="submit"
