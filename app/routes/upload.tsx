@@ -3,7 +3,7 @@ import type { Route } from "./+types/home";
 import { useState, type FormEvent } from "react";
 import FileUploader from "~/components/FileUploader";
 import { convertPdfToImage } from "~/lib/pdf2img";
-import { generateUUID } from "~/lib/utils";
+import { delay, generateUUID } from "~/lib/utils";
 import { prepareInstructions } from "~/lib/constants";
 import { analyzeWithGemini } from "~/lib/gemini";
 import { saveResume } from "~/lib/db";
@@ -30,7 +30,7 @@ export default function Upload() {
   const [statusText, setStatusText] = useState("");
   // State for storing the PDF file uploaded by the user
   const [file, setFile] = useState<File | null>(null);
-  // State for storing whether the user pressed submit without selecting a file 
+  // State for storing whether the user pressed submit without selecting a file
   const [fileUploadError, setFileUploadError] = useState(false);
 
   // Feed the user input to the AI and
@@ -51,6 +51,7 @@ export default function Upload() {
 
       // Convert the first page of the PDF into an image so it can be sent to the AI
       setStatusText("Converting PDF to image");
+      await delay(1000);
       let imageFile;
       try {
         imageFile = await convertPdfToImage(file);
@@ -66,6 +67,7 @@ export default function Upload() {
 
       // Prepare the data object for storing
       setStatusText("Preparing data");
+      await delay(1000);
       let uuid;
       let resume;
       try {
@@ -85,6 +87,7 @@ export default function Upload() {
 
       // Prepare AI prompt
       setStatusText("Preparing instructions");
+      await delay(1000);
       let prompt;
       try {
         prompt = prepareInstructions({
@@ -118,13 +121,14 @@ export default function Upload() {
       }
 
       // Turn the AI's response into a JSON object so the values inside can be accesed and the data can be mapped over
+      setStatusText("Parsing AI response");
+      await delay(1000);
       try {
         // Remove triple backticks (``` or ```json)
         const cleaned = geminiResponse
           .replace(/^```(?:json)?/, "")
           .replace(/```$/, "")
           .trim();
-
         // Parse the response into JSON
         resume.feedback = JSON.parse(cleaned);
       } catch (err) {
@@ -134,6 +138,7 @@ export default function Upload() {
 
       // Save the AI's response, the PDF file and the image in the local IndexedDB using idb-keyval
       setStatusText("Saving");
+      await delay(1000);
       const saveResult = await saveResume(resume, file, imageFile.file);
       if (!saveResult.success) {
         setStatusText("Failed to save resume: " + saveResult.error);
@@ -142,6 +147,7 @@ export default function Upload() {
 
       // Redirect to the resume review page
       setStatusText("Redirecting");
+      await delay(1000);
       navigate(`/resume/${uuid}`);
     } catch (err) {
       console.error("Unexpected error in processData:", err);
@@ -173,8 +179,8 @@ export default function Upload() {
       }
       // Make the file uploader component red
       setFileUploadError(true);
-      return
-    };
+      return;
+    }
 
     setFileUploadError(false);
     // Process the user input data
@@ -201,9 +207,17 @@ export default function Upload() {
         </Link>
       </nav>
 
-      <div className="flex-1 w-full flex flex-col px-4">
+      <div className="flex-1 h-full flex flex-col px-4">
         {isProcessing ? (
-          <>{statusText}</>
+          <div className="flex-1 flex flex-col items-center justify-center bg-neutral-50">
+            {/* Spinner animation for loading */}
+            <div className="w-10 h-10 border-4 border-neutral-300 border-t-neutral-800 rounded-full animate-spin"></div>
+
+            {/* Status text to tell the user what's currently being done */}
+            <p className="mt-4 text-neutral-600 text-lg tracking-wide">
+              {statusText}
+            </p>
+          </div>
         ) : (
           <>
             <section className="w-full flex flex-col items-center justify-center px-4 pt-16 pb-16 text-center">
@@ -278,7 +292,10 @@ export default function Upload() {
                   <label className="text-base font-medium text-neutral-800">
                     Your Resume (PDF)
                   </label>
-                  <FileUploader onFileSelect={handleFileSelect} fileUploadError={fileUploadError}/>
+                  <FileUploader
+                    onFileSelect={handleFileSelect}
+                    fileUploadError={fileUploadError}
+                  />
                 </div>
                 <button
                   type="submit"

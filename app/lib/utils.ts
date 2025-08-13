@@ -12,3 +12,7 @@ export function formatSize(bytes: number): string {
 
 // Function to generate a unique UUID
 export const generateUUID = () => crypto.randomUUID();
+
+// Simple helper to pause for N ms
+export const delay = (ms: number) =>
+  new Promise((resolve) => setTimeout(resolve, ms));
