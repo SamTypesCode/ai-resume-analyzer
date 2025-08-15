@@ -196,7 +196,7 @@ export default function Upload() {
   return (
     <main className="flex flex-col min-h-screen bg-white !pt-0">
       {/* A simple bar at the top with a button for going back to the home page */}
-      <nav className="flex flex-row sticky top-0 bg-white/90 backdrop-blur-lg justify-between items-center p-4 border-b border-neutral-200 z-10">
+      <nav className="flex flex-row sticky top-0 bg-white/90 backdrop-blur-lg justify-between items-center p-4 border-b border-neutral-200 z-50">
         <Link
           to="/"
           className="flex flex-row items-center gap-2 border border-neutral-200 rounded-lg p-2 shadow-sm bg-white"
@@ -209,7 +209,7 @@ export default function Upload() {
 
       <div className="flex-1 h-full flex flex-col px-4">
         {isProcessing ? (
-          <div className="flex-1 flex flex-col items-center justify-center bg-neutral-50">
+          <div className="flex-1 flex flex-col items-center justify-center">
             {/* Spinner animation for loading */}
             <div className="w-10 h-10 border-4 border-neutral-300 border-t-neutral-800 rounded-full animate-spin"></div>
 

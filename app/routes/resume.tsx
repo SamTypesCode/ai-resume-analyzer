@@ -5,7 +5,7 @@ import { getResume } from "~/lib/db";
 import Summary from "~/components/Summary";
 import Details from "~/components/Details";
 
-// Define the meta deta such as page title and description for SEO
+// Meta information for the page (SEO)
 export function meta({}: Route.MetaArgs) {
   return [
     { title: "AI Resume Review & Feedback" },
@@ -17,25 +17,26 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-// Return the default resume page component
+// Resume page component
 export default function Resume() {
-  // Resume ID from URL
+  // Get the resume ID from the URL
   const { id } = useParams();
-  // State to store the resume object containing the feedback
+
+  // State to hold resume data (with feedback)
   const [resume, setResume] = useState<Resume | null>(null);
-  // State to store the PDF URL created in the browser
+  // State to hold PDF blob URL
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
-  // State to store the image URL created in the browser
+  // State to hold image blob URL
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
-  // Use the ID from the URL to get the resume, the image and the PDF from the local database using idb-keyval
+  // Fetch resume from local IndexedDB storage by ID
   useEffect(() => {
     if (!id) return;
 
     let pdfObjectUrl: string;
     let imageObjectUrl: string;
 
-    // Get the resume from the local database and create a URL for the image and the PDF
+    // Retrieve resume data and create blob URLs for PDF & image
     getResume(id).then((data) => {
       if (data) {
         pdfObjectUrl = URL.createObjectURL(data.pdfBlob);
@@ -47,7 +48,7 @@ export default function Resume() {
       }
     });
 
-    // Delete the created URLs for the image and the PDF on component or page unmount
+    // Cleanup blob URLs on component unmount
     return () => {
       if (pdfObjectUrl) URL.revokeObjectURL(pdfObjectUrl);
       if (imageObjectUrl) URL.revokeObjectURL(imageObjectUrl);
@@ -55,9 +56,9 @@ export default function Resume() {
   }, [id]);
 
   return (
-    <main className="flex flex-col min-h-screen bg-white !pt-0">
-      {/* A simple bar at the top with a button for going back to the home page */}
-      <nav className="flex flex-row sticky top-0 bg-white/90 backdrop-blur-lg justify-between items-center p-4 border-b border-neutral-200 z-10">
+    <main className="flex flex-col min-h-[100dvh] bg-white !pt-0">
+      {/* Top navigation bar with "Back to Homepage" link */}
+      <nav className="flex flex-row sticky top-0 bg-white/90 backdrop-blur-lg justify-between items-center p-4 border-b border-neutral-200 z-50">
         <Link
           to="/"
           className="flex flex-row items-center gap-2 border border-neutral-200 rounded-lg p-2 shadow-sm bg-white"
@@ -68,15 +69,27 @@ export default function Resume() {
         </Link>
       </nav>
 
-      <div className="flex-1 h-full flex max-lg:flex-col">
-        {/* If the resume data is found then display the review UI */}
+      {/* Main content area - keeps items at top instead of stretching */}
+      <div className="flex-1 w-full max-w-screen-xl mx-auto h-full flex items-start max-lg:flex-col max-lg:pb-4 lg:pt-12 pb-12 pt-4 px-4">
+        {/* Only render content if data is loaded */}
         {imageUrl && pdfUrl && resume?.feedback ? (
           <>
-            <section className="lg:max-w-[324px] w-full p-6 lg:h-[calc(100vh-71px)] lg:overflow-y-auto">
+            {/* Left column: Summary & Details */}
+            <section className="lg:max-w-[360px] w-full p-6 rounded-3xl border border-neutral-200">
               <Summary score={resume.feedback.ATS.score} />
-              <Details />
+              <Details feedback={resume.feedback} />
             </section>
-            {/* TODO: Add section to display the PDF image */}
+
+            {/* Right column: Resume preview image linking to PDF */}
+            <section className="flex-1 w-full flex items-center justify-center max-lg:pt-4 lg:pl-8">
+              <a href={pdfUrl} target="_blank">
+                <img
+                  src={imageUrl}
+                  className="w-full rounded-3xl border border-neutral-200"
+                  alt="resume image"
+                />
+              </a>
+            </section>
           </>
         ) : (
           <></>

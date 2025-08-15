@@ -66,11 +66,13 @@ Use the job title and job description to assess the resume’s relevance and key
 ---
 
 Important Output Instructions:
-- Always return a **valid JSON object**.
+- Always return a valid JSON object.
 - Do not include markdown, backticks, or any extra explanation outside the JSON.
-- Follow the **exact structure and property names** in ${AIResponseFormat}.
+- Follow the exact structure and property names in ${AIResponseFormat}.
+- Titles: max 4–6 words, single short line.
+- Descriptions: max 1–2 lines, each under ~40 characters.
 - Never break the format, even if inputs are incomplete, missing, or irrelevant.
-- Keep your language clear, slightly shorter than usual, but still insightful.
+- Keep text extremely concise, clear, and insightful.
 
 Return only the final result as a structured JSON object.
 `;
