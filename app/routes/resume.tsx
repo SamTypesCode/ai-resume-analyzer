@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import type { Route } from "./+types/home";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import { getResume } from "~/lib/db";
+import Summary from "~/components/Summary";
+import Details from "~/components/Details";
 
 // Define the meta deta such as page title and description for SEO
 export function meta({}: Route.MetaArgs) {
@@ -52,5 +54,34 @@ export default function Resume() {
     };
   }, [id]);
 
-  return <></>;
+  return (
+    <main className="flex flex-col min-h-screen bg-white !pt-0">
+      {/* A simple bar at the top with a button for going back to the home page */}
+      <nav className="flex flex-row sticky top-0 bg-white/90 backdrop-blur-lg justify-between items-center p-4 border-b border-neutral-200 z-10">
+        <Link
+          to="/"
+          className="flex flex-row items-center gap-2 border border-neutral-200 rounded-lg p-2 shadow-sm bg-white"
+        >
+          <span className="text-neutral-800 text-sm font-semibold">
+            Back to Homepage
+          </span>
+        </Link>
+      </nav>
+
+      <div className="flex-1 h-full flex max-lg:flex-col">
+        {/* If the resume data is found then display the review UI */}
+        {imageUrl && pdfUrl && resume?.feedback ? (
+          <>
+            <section className="lg:max-w-[324px] w-full p-6 lg:h-[calc(100vh-71px)] lg:overflow-y-auto">
+              <Summary score={resume.feedback.ATS.score} />
+              <Details />
+            </section>
+            {/* TODO: Add section to display the PDF image */}
+          </>
+        ) : (
+          <></>
+        )}
+      </div>
+    </main>
+  );
 }

@@ -10,7 +10,6 @@ interface Resume {
 
 // The Typescript type interface for the AI Feedback
 interface Feedback {
-  overallScore: number;
   ATS: {
     score: number;
     tips: {

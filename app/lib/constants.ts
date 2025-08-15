@@ -1,9 +1,8 @@
 // The JSON format in which the AI should reply, a response in the form of JSON makes it easy to parse the response and perform actions or map over the data to create UI
 export const AIResponseFormat = `
       interface Feedback {
-      overallScore: number; //max 100
       ATS: {
-        score: number; //rate based on ATS suitability
+        score: number; //a kind of overall score, based on ATS suitability, max 100
         tips: {
           type: "good" | "improve";
           tip: string; //give 3-4 tips
