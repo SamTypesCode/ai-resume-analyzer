@@ -297,63 +297,69 @@ export default function Upload() {
                     fileUploadError={fileUploadError}
                   />
                 </div>
-                <button
-                  type="submit"
-                  className="group cursor-pointer relative w-full overflow-hidden rounded-[8px] border border-transparent bg-neutral-950 px-4 text-white"
-                >
-                  <span className="relative inline-flex py-3">
-                    <span className="duration-700 [transition-delay:0.02s] group-hover:[transform:rotateX(360deg)]">
-                      R
+                <div>
+                  <p className="text-sm mb-4">
+                    All resume data, AI feedback, reviews, and ATS scores are
+                    stored locally on your device and never sent to our servers.
+                  </p>
+                  <button
+                    type="submit"
+                    className="group cursor-pointer relative w-full overflow-hidden rounded-[8px] border border-transparent bg-neutral-950 px-4 text-white"
+                  >
+                    <span className="relative inline-flex py-3">
+                      <span className="duration-700 [transition-delay:0.02s] group-hover:[transform:rotateX(360deg)]">
+                        R
+                      </span>
+                      <span className="duration-700 [transition-delay:0.04s] group-hover:[transform:rotateX(360deg)]">
+                        e
+                      </span>
+                      <span className="duration-700 [transition-delay:0.06s] group-hover:[transform:rotateX(360deg)]">
+                        v
+                      </span>
+                      <span className="duration-700 [transition-delay:0.08s] group-hover:[transform:rotateX(360deg)]">
+                        i
+                      </span>
+                      <span className="duration-700 [transition-delay:0.10s] group-hover:[transform:rotateX(360deg)]">
+                        e
+                      </span>
+                      <span className="duration-700 [transition-delay:0.12s] group-hover:[transform:rotateX(360deg)]">
+                        w
+                      </span>
+                      {/* Space */}
+                      <span className="duration-700 [transition-delay:0.14s] group-hover:[transform:rotateX(360deg)]">
+                        &nbsp;
+                      </span>
+                      <span className="duration-700 [transition-delay:0.16s] group-hover:[transform:rotateX(360deg)]">
+                        m
+                      </span>
+                      <span className="duration-700 [transition-delay:0.18s] group-hover:[transform:rotateX(360deg)]">
+                        y
+                      </span>
+                      {/* Space */}
+                      <span className="duration-700 [transition-delay:0.20s] group-hover:[transform:rotateX(360deg)]">
+                        &nbsp;
+                      </span>
+                      <span className="duration-700 [transition-delay:0.22s] group-hover:[transform:rotateX(360deg)]">
+                        R
+                      </span>
+                      <span className="duration-700 [transition-delay:0.24s] group-hover:[transform:rotateX(360deg)]">
+                        e
+                      </span>
+                      <span className="duration-700 [transition-delay:0.26s] group-hover:[transform:rotateX(360deg)]">
+                        s
+                      </span>
+                      <span className="duration-700 [transition-delay:0.28s] group-hover:[transform:rotateX(360deg)]">
+                        u
+                      </span>
+                      <span className="duration-700 [transition-delay:0.30s] group-hover:[transform:rotateX(360deg)]">
+                        m
+                      </span>
+                      <span className="duration-700 [transition-delay:0.32s] group-hover:[transform:rotateX(360deg)]">
+                        e
+                      </span>
                     </span>
-                    <span className="duration-700 [transition-delay:0.04s] group-hover:[transform:rotateX(360deg)]">
-                      e
-                    </span>
-                    <span className="duration-700 [transition-delay:0.06s] group-hover:[transform:rotateX(360deg)]">
-                      v
-                    </span>
-                    <span className="duration-700 [transition-delay:0.08s] group-hover:[transform:rotateX(360deg)]">
-                      i
-                    </span>
-                    <span className="duration-700 [transition-delay:0.10s] group-hover:[transform:rotateX(360deg)]">
-                      e
-                    </span>
-                    <span className="duration-700 [transition-delay:0.12s] group-hover:[transform:rotateX(360deg)]">
-                      w
-                    </span>
-                    {/* Space */}
-                    <span className="duration-700 [transition-delay:0.14s] group-hover:[transform:rotateX(360deg)]">
-                      &nbsp;
-                    </span>
-                    <span className="duration-700 [transition-delay:0.16s] group-hover:[transform:rotateX(360deg)]">
-                      m
-                    </span>
-                    <span className="duration-700 [transition-delay:0.18s] group-hover:[transform:rotateX(360deg)]">
-                      y
-                    </span>
-                    {/* Space */}
-                    <span className="duration-700 [transition-delay:0.20s] group-hover:[transform:rotateX(360deg)]">
-                      &nbsp;
-                    </span>
-                    <span className="duration-700 [transition-delay:0.22s] group-hover:[transform:rotateX(360deg)]">
-                      R
-                    </span>
-                    <span className="duration-700 [transition-delay:0.24s] group-hover:[transform:rotateX(360deg)]">
-                      e
-                    </span>
-                    <span className="duration-700 [transition-delay:0.26s] group-hover:[transform:rotateX(360deg)]">
-                      s
-                    </span>
-                    <span className="duration-700 [transition-delay:0.28s] group-hover:[transform:rotateX(360deg)]">
-                      u
-                    </span>
-                    <span className="duration-700 [transition-delay:0.30s] group-hover:[transform:rotateX(360deg)]">
-                      m
-                    </span>
-                    <span className="duration-700 [transition-delay:0.32s] group-hover:[transform:rotateX(360deg)]">
-                      e
-                    </span>
-                  </span>
-                </button>
+                  </button>
+                </div>
               </form>
             </div>
           </>
