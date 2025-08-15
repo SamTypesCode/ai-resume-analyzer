@@ -41,7 +41,7 @@ const Details = ({ feedback }: { feedback: Feedback }) => {
     <Accordion
       type="single"
       collapsible
-      className="w-full mt-8 pt-6"
+      className="w-full mt-8 pt-6 border-t border-neutral-200"
       defaultValue="item-1"
     >
       <AccordionItem value="item-1">

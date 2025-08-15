@@ -220,7 +220,7 @@ export default function Upload() {
           </div>
         ) : (
           <>
-            <section className="w-full flex flex-col items-center justify-center px-4 pt-16 pb-16 text-center">
+            <section className="w-full flex flex-col items-center justify-center pt-12 pb-16 md:py-16 text-left">
               <div className="w-full max-w-lg">
                 <p className="text-5xl md:text-6xl leading-tight tracking-[-2px] font-semibold text-neutral-900">
                   Get smart AI feedback for your dream job
@@ -231,7 +231,7 @@ export default function Upload() {
                 </h2>
               </div>
             </section>
-            <div className="w-full max-w-lg mx-auto flex flex-col items-center justify-center pb-12">
+            <div className="w-full max-w-lg mx-auto flex flex-col items-center justify-center pb-4 md:pb-12">
               <form
                 id="upload-form"
                 onSubmit={(e) => {
@@ -298,10 +298,12 @@ export default function Upload() {
                   />
                 </div>
                 <div>
-                  <p className="text-sm mb-4">
-                    All resume data, AI feedback, reviews, and ATS scores are
-                    stored locally on your device and never sent to our servers.
+                  <p className="text-sm mb-3 leading-snug">
+                    All resume data, AI feedback, reviews, and ATS scores stay
+                    on your device and are never sent to or saved on our
+                    servers.
                   </p>
+
                   <button
                     type="submit"
                     className="group cursor-pointer relative w-full overflow-hidden rounded-[8px] border border-transparent bg-neutral-950 px-4 text-white"

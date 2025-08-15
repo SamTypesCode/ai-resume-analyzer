@@ -64,15 +64,15 @@ The following fields are user inputs and may vary:
 Use the job title and job description to assess the resume’s relevance and keyword alignment. If the job description is missing or vague, base your feedback on general expectations for the given role.
 
 ---
-
 Important Output Instructions:
 - Always return a valid JSON object.
 - Do not include markdown, backticks, or any extra explanation outside the JSON.
 - Follow the exact structure and property names in ${AIResponseFormat}.
-- Titles: max 4–6 words, single short line.
-- Descriptions: max 1–2 lines, each under ~40 characters.
+- Titles: max 3–4 words, single short line.
+- Descriptions: max 1 short line, under ~25 chars.
+- Keep everything extremely brief, with no filler words.
 - Never break the format, even if inputs are incomplete, missing, or irrelevant.
-- Keep text extremely concise, clear, and insightful.
+- Make all scores and text as short and clear as possible.
 
 Return only the final result as a structured JSON object.
 `;
