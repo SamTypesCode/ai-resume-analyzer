@@ -4,8 +4,15 @@
 /* Import Tailwind base styles (requires PostCSS or Tailwind setup) */
 @import "tailwindcss";
 
-/* Define global custom properties for font families (used throughout the app) */
-@theme {
+/* Global box-sizing to prevent overflow from padding/borders */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Define global custom properties for font families */
+:root {
   --font-sans:
     "Mona Sans", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -14,14 +21,44 @@
 /* Apply global background and layout defaults */
 html,
 body {
-  @apply bg-white w-full;
+  min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
   font-family: var(--font-sans);
+  background: white;
 }
 
-/* Ensure main content fills the full viewport height */
-/* (Each page is wrapped in a <main> tag) */
+/* Mobile-specific fixes */
+@media (max-width: 850px) {
+  html,
+  body {
+    min-height: 100vh;
+    width: 100%;
+  }
+}
+
+/* Ensure main content fills the viewport height */
 main {
   @apply min-h-screen;
+  /* remove padding-bottom so you can control it per page */
+  /* padding-bottom: calc(3rem + env(safe-area-inset-bottom)); */
+}
+
+/* Utility classes for safe area support (use only for edge-to-edge sections) */
+.safe-bottom {
+  padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+}
+
+.safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-area-full {
+  padding-top: env(safe-area-inset-top);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
 }
 
 /* Primary heading style */
@@ -34,10 +71,15 @@ h2 {
   @apply text-3xl;
 }
 
+/* Label for inputs */
+label {
+  @apply mb-1;
+}
+
 /* Input and textarea styling with subtle focus ring */
 input,
 textarea {
-  @apply w-full rounded-lg bg-white focus:outline-none focus:ring-[1px];
+  @apply w-full rounded-lg bg-white focus:outline-none focus:ring-[1px] px-4 py-3;
 }
 
 /* Form layout with vertical spacing between fields */

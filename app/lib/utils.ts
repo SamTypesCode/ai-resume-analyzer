@@ -29,8 +29,30 @@ export function formatSize(bytes: number): string {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
 }
 
-// Function to generate a unique UUID
-export const generateUUID = () => crypto.randomUUID();
+// Function to generate a unique UUID with fallback for mobile browsers
+export const generateUUID = (): string => {
+  // Try to use the native crypto.randomUUID if available
+  if (
+    typeof crypto !== "undefined" &&
+    typeof crypto.randomUUID === "function"
+  ) {
+    try {
+      return crypto.randomUUID();
+    } catch (error) {
+      console.warn(
+        "crypto.randomUUID failed, falling back to manual generation:",
+        error
+      );
+    }
+  }
+
+  // Fallback implementation for browsers that don't support crypto.randomUUID
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    const r = (Math.random() * 16) | 0;
+    const v = c === "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+};
 
 // Simple helper to pause for N ms
 export const delay = (ms: number) =>
