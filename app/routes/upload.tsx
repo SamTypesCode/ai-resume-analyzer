@@ -182,10 +182,6 @@ export default function Upload() {
 
       // Mark the file uploader as having an error
       setFileUploadError(true);
-
-      // Display an error message to the user
-      setStatusText("Please upload a resume file.");
-      setProcessingError(true);
       return;
     }
 
